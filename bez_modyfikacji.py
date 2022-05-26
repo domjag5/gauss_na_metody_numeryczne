@@ -90,10 +90,10 @@ def wypisz_rownanie():
             dwa_po_przecinku = round(M[i][k][0] / M[i][k][1], 2) + 0
             jedno_po_przecinku = round(M[i][k][0] / M[i][k][1], 1) + 0
             if dwa_po_przecinku == jedno_po_przecinku:
-                print((M[i][k][0] / M[i][k][1]) + 0, end=" ")
+                print('{0:5}'.format((M[i][k][0] / M[i][k][1]) + 0), end=" ")
             else:
-                print('{0:.2f}'.format(dwa_po_przecinku), end=" ")
-        print("\t\t|", (D[i][0][0] / D[i][0][1]))
+                print('{0:5.2f}'.format(dwa_po_przecinku), end=" ")
+        print(" |", '{0:5.2f}'.format(D[i][0][0] / D[i][0][1]))
 
 
 # PROGRAM
@@ -177,7 +177,7 @@ else:
             dwa_po_przecinku = round(D[i][k][0] / D[i][k][1], 2) + 0
             jedno_po_przecinku = round(D[i][k][0] / D[i][k][1], 1) + 0
             if dwa_po_przecinku == jedno_po_przecinku:
-                print((D[i][k][0] / D[i][k][1]) + 0, end=" ")
+                print('{0:5.2f}'.format((D[i][k][0] / D[i][k][1]) + 0), end=" ")
             else:
-                print('{0:.2f}'.format(dwa_po_przecinku), end=" ")
+                print('{0:5.2f}'.format(dwa_po_przecinku), end=" ")
         print()
