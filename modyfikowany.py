@@ -1,101 +1,48 @@
-# GLOBALNE
-# wczytanie danych
-n = int(input())
-M = []
-D = []
-# macierz wejsciowa (ukladu)
-for w in range(n):
-    kosz = input().split()
-    wiersz = []
-    for k in range(n):
-        pole = [int(kosz[k]), 1]
-        wiersz.append(pole)
-    M.append(wiersz)
-# iksy (wektor wyrazow wolnych)
-for w in range(n):
-    kosz = int(input())
-    wiersz = []
-    for k in range(n):
-        if k == 0:
-            pole = [int(kosz), 1]
-        else:
-            pole = [0, 1]
-        wiersz.append(pole)
-    D.append(wiersz)
-#FUNKCJE
-# funkcje nwd i nww
-def nwd(a, b):
-    while b != 0:
-        c = a % b
-        a = b
-        b = c
-    return a
-
-
-def nww(a, b):
-    c = b / nwd(a, b) * a
-    return c
-
-
-# funkcja skracanie ulamka w macierzy
-def skroc_ulamek(M, w, k):
-    dzielimy_przez = nwd(M[w][k][0], M[w][k][1])
-    M[w][k][0] /= dzielimy_przez
-    M[w][k][1] /= dzielimy_przez
-
-
-# funkcja skracanie ulamka nie w macierzy
-def skroc_ulamek_niewt(x, y):
-    dzielimy_przez = nwd(x, y)
-    x /= dzielimy_przez
-    y /= dzielimy_przez
-    return x, y
-
-
+# FUNKCJE
 # funkcja zamiana wiersza
 def zamien_wiersze(M, x, y):
     for k in range(n):
-        M[x][k][0], M[y][k][0] = M[y][k][0], M[x][k][0]
-        M[x][k][1], M[y][k][1] = M[y][k][1], M[x][k][1]
+        M[x][k], M[y][k] = M[y][k], M[x][k]
 
 
 # funkcja dzielenie wiersza - mnozymy przez odwrotnosc
-def podziel_wiersz(M, wiersz, dzielnik_licznik, dzielnik_mianownik):
+def podziel_wiersz(M, wiersz, dzielnik):
     for k in range(n):
-        M[wiersz][k][0] *= dzielnik_mianownik
-        M[wiersz][k][1] *= dzielnik_licznik
-        skroc_ulamek(M, wiersz, k)
+        M[wiersz][k] /= dzielnik
 
 
 # funkcja odjecie wiersza pomnozonego przez cos
 # mnozenie -mnozymy licznik i mianownik
 # odejmowanie
-def odejmij_wiersze(M, odjemna, odjemnik, mnoznik_licznik, mnoznik_mianownik):
+def odejmij_wiersze(M, odjemna, odjemnik, mnoznik):
     for k in range(n):
-        odjemnik_licznik = M[odjemnik][k][0] * mnoznik_licznik
-        odjemnik_mianownik = M[odjemnik][k][1] * mnoznik_mianownik
-        odjemnik_licznik, odjemnik_mianownik = skroc_ulamek_niewt(odjemnik_licznik, odjemnik_mianownik)
-        nowy_mianownik = nww(M[odjemna][k][1], odjemnik_mianownik)
-        M[odjemna][k][0] *= (nowy_mianownik / M[odjemna][k][1])
-        odjemnik_licznik *= (nowy_mianownik / odjemnik_mianownik)
-        M[odjemna][k][1] = nowy_mianownik
-        odjemnik_mianownik = nowy_mianownik
-        M[odjemna][k][0] -= odjemnik_licznik
-        skroc_ulamek(M, w, k)
+        M[odjemna][k] -= M[odjemnik][k] * mnoznik
 
 
 def wypisz_rownanie():
     for i in range(n):
         for k in range(n):
-            dwa_po_przecinku = round(M[i][k][0] / M[i][k][1], 2) + 0
-            jedno_po_przecinku = round(M[i][k][0] / M[i][k][1], 1) + 0
-            if dwa_po_przecinku == jedno_po_przecinku:
-                print((M[i][k][0] / M[i][k][1]) + 0, end=" ")
-            else:
-                print('{0:.2f}'.format(dwa_po_przecinku), end=" ")
-        print("\t\t|", (D[i][0][0] / D[i][0][1]))
+            print('{0:5.2f}'.format(M[i][k]+0), end=" ")
+        print("\t|", '{0:5.2f}'.format(D[i][0]+0))
 
 
+# GLOBALNE
+# wczytanie danych
+print("n: ")
+print("macierz:")
+print("iksy: ")
+n = int(input())
+M = []
+D = []
+# macierz wejsciowa (ukladu)
+for w in range(n):
+    M.append([float(x) for x in input().split()])
+# iksy (wektor wyrazow wolnych)
+kosz = input().split()
+for w in range(n):
+    D.append([0 for x in range(n)])
+    D[w][0] = float(kosz[w])
+# wypisz_rownanie()
 # PROGRAM
 # poczatek
 aktualny_pierwszy_wiersz = 0
@@ -105,7 +52,6 @@ aktualna_liczba_kolumn = n
 # xd
 a_j0 = 0
 #
-wypisz_rownanie()
 while aktualny_pierwszy_wiersz < n and aktualna_pierwsza_kolumna < n and \
         aktualna_liczba_wierszy > 0 and aktualna_liczba_kolumn > 0:
     # a_w,k - element glowny
@@ -113,57 +59,67 @@ while aktualny_pierwszy_wiersz < n and aktualna_pierwsza_kolumna < n and \
     # wybor elemntu glownego
     w = aktualny_pierwszy_wiersz
     k = aktualna_pierwsza_kolumna
-    a_licznik = M[w][k][0]
-    a_mianownik = M[w][k][1]
-    
+    a = M[w][k]
+    # znalezienie kolumny gdzie jest jakis niezerowy element
     for k in range(aktualna_pierwsza_kolumna, n):
         for w in range(aktualny_pierwszy_wiersz, n):
-            a_licznik = M[w][k][0]
-            a_mianownik = M[w][k][1]
-            if a_licznik != 0:
+            a = M[w][k]
+            if a != 0:
                 break
-        if a_licznik != 0:
+        if a != 0:
             break
-    print("element glowny:", a_licznik / a_mianownik)
-    if a_licznik == 0:
+    if a == 0:
         break
     else:
+        # znalezienie el o najwiekszej wartoci bezwzglednej w tek kolumnie
+        max = (a, w)
+        for w2 in range(w, n):
+            if abs(M[w2][k]) > abs(max[0]):
+                max = (M[w2][k], w2)
+        a = max[0]
+        w = max[1]
+        #
         a_i0 = w
         a_j0 = k
-        # zamiana pierwszego wiersza z wierszem i0
+        # zamiana pierwszego wiersza z wierszem elementu glownego
+        wypisz_rownanie()
+        print("zamiana {0} <-> {1}".format(aktualny_pierwszy_wiersz,w))
         zamien_wiersze(M, aktualny_pierwszy_wiersz, a_i0)
         zamien_wiersze(D, aktualny_pierwszy_wiersz, a_i0)
+        if aktualny_pierwszy_wiersz!=w:
+            wypisz_rownanie()
         # dzielenie pierwszego wiersza przez a
-        podziel_wiersz(M, aktualny_pierwszy_wiersz, a_licznik, a_mianownik)
-        podziel_wiersz(D, aktualny_pierwszy_wiersz, a_licznik, a_mianownik)
+        print("dzielenie przez element glowny ({0:.2f})".format(a))
+        podziel_wiersz(M, aktualny_pierwszy_wiersz, a)
+        podziel_wiersz(D, aktualny_pierwszy_wiersz, a)
+        # wypisz_rownanie()
         # Dla wszystkich wierszy oprocz pierwszego:
         # od danego wiersza odejmujemy wiersz pierwszy macierzy A
-        # pomnożony przez element stojący w danym wierszu w kolumnie j0
-        print("mnozniki:", end=" ")
+        # pomnożony przez element stojący w danym wierszu w kolumnie elementu glownego
+        # (czyli zerujemy kolejna kolumne)
+        #print("mnozniki:", end=" ")
         for w in range(n):
-            mnoznik_licznik = M[w][a_j0][0]
-            mnoznik_mianownik = M[w][a_j0][1]
-            print('{0:.2f}'.format((mnoznik_licznik / mnoznik_mianownik) / (a_licznik / a_mianownik)), end=" ")
+            mnoznik = M[w][a_j0]
+            #print('{0:5.2f}'.format(M[w][a_j0]), end=" ")
             if w != aktualny_pierwszy_wiersz:
-                odejmij_wiersze(M, w, aktualny_pierwszy_wiersz, mnoznik_licznik, mnoznik_mianownik)
-                odejmij_wiersze(D, w, aktualny_pierwszy_wiersz, mnoznik_licznik, mnoznik_mianownik)
+                print("odejmowanie od wiersza {0} wiersza {1} z mnoznikiem {2:.2f}".format(w,aktualny_pierwszy_wiersz,mnoznik))
+                odejmij_wiersze(M, w, aktualny_pierwszy_wiersz, mnoznik)
+                odejmij_wiersze(D, w, aktualny_pierwszy_wiersz, mnoznik)
+                # wypisz_rownanie()
             else:
                 pass
-        print()
+        #print()
     # zmniejszamy macierz (rozpatrywana czesc macierzy)
     aktualny_pierwszy_wiersz += 1
     aktualna_pierwsza_kolumna = a_j0 + 1
     aktualna_liczba_wierszy -= 1
     aktualna_liczba_kolumn = n - aktualna_pierwsza_kolumna
-    #
-    print()
-    wypisz_rownanie()
 # rzad macierzy
 i = 0
-pom = M[n - 1][n - 1][0]
+pom = M[n - 1][n - 1]
 for i in range(n - 1, -1, -1):
     for k in range(n - 1, -1, -1):
-        pom = M[i][k][0]
+        pom = M[i][k]
         if pom != 0:
             break
     if pom != 0:
@@ -171,14 +127,7 @@ for i in range(n - 1, -1, -1):
 if i + 1 < n:
     print("macierz nieodwracalna")
 else:
-    print()
+    print("wynik")
     # wypisanie macierzy w postaci calkowicie zredukowanej
-    for i in range(n):
-        for k in range(n):
-            dwa_po_przecinku = round(D[i][k][0] / D[i][k][1], 2) + 0
-            jedno_po_przecinku = round(D[i][k][0] / D[i][k][1], 1) + 0
-            if dwa_po_przecinku == jedno_po_przecinku:
-                print((D[i][k][0] / D[i][k][1]) + 0, end=" ")
-            else:
-                print('{0:.2f}'.format(dwa_po_przecinku), end=" ")
-        print()
+    wypisz_rownanie()
+    print()
