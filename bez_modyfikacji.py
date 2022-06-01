@@ -22,8 +22,8 @@ def odejmij_wiersze(M, odjemna, odjemnik, mnoznik):
 def wypisz_rownanie():
     for i in range(n):
         for k in range(n):
-            print('{0:5.2f}'.format(M[i][k]+0), end=" ")
-        print("\t|", '{0:5.2f}'.format(D[i][0]+0))
+            print('{0:5.2f}'.format(M[i][k] + 0), end=" ")
+        print("\t|", '{0:5.2f}'.format(D[i][0] + 0))
 
 
 # GLOBALNE
@@ -75,10 +75,10 @@ while aktualny_pierwszy_wiersz < n and aktualna_pierwsza_kolumna < n and \
         a_j0 = k
         # zamiana pierwszego wiersza z wierszem elementu glownego
         wypisz_rownanie()
-        print("zamiana {0} <-> {1}".format(aktualny_pierwszy_wiersz,w))
+        print("zamiana {0} <-> {1}".format(aktualny_pierwszy_wiersz, w))
         zamien_wiersze(M, aktualny_pierwszy_wiersz, a_i0)
         zamien_wiersze(D, aktualny_pierwszy_wiersz, a_i0)
-        if aktualny_pierwszy_wiersz!=w:
+        if aktualny_pierwszy_wiersz != w:
             wypisz_rownanie()
         # dzielenie pierwszego wiersza przez a
         print("dzielenie przez element glowny ({0:.2f})".format(a))
@@ -89,18 +89,19 @@ while aktualny_pierwszy_wiersz < n and aktualna_pierwsza_kolumna < n and \
         # od danego wiersza odejmujemy wiersz pierwszy macierzy A
         # pomnożony przez element stojący w danym wierszu w kolumnie elementu glownego
         # (czyli zerujemy kolejna kolumne)
-        #print("mnozniki:", end=" ")
+        # print("mnozniki:", end=" ")
         for w in range(n):
             mnoznik = M[w][a_j0]
-            #print('{0:5.2f}'.format(M[w][a_j0]), end=" ")
+            # print('{0:5.2f}'.format(M[w][a_j0]), end=" ")
             if w != aktualny_pierwszy_wiersz:
-                print("odejmowanie od wiersza {0} wiersza {1} z mnoznikiem {2:.2f}".format(w,aktualny_pierwszy_wiersz,mnoznik))
+                print("odejmowanie od wiersza {0} wiersza {1} z mnoznikiem {2:.2f}".format(w, aktualny_pierwszy_wiersz,
+                                                                                           mnoznik))
                 odejmij_wiersze(M, w, aktualny_pierwszy_wiersz, mnoznik)
                 odejmij_wiersze(D, w, aktualny_pierwszy_wiersz, mnoznik)
                 # wypisz_rownanie()
             else:
                 pass
-        #print()
+        # print()
     # zmniejszamy macierz (rozpatrywana czesc macierzy)
     aktualny_pierwszy_wiersz += 1
     aktualna_pierwsza_kolumna = a_j0 + 1

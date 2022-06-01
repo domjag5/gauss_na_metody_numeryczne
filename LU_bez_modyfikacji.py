@@ -22,19 +22,21 @@ def odejmij_wiersze(M, odjemna, odjemnik, mnoznik):
 def wypisz_rownanie():
     for i in range(n):
         for k in range(n):
-            print('{0:5.2f}'.format(M[i][k]+0), end=" ")
-        print("\t|", '{0:5.2f}'.format(D[i][0]+0))
+            print('{0:5.2f}'.format(M[i][k] + 0), end=" ")
+        print("\t|", '{0:5.2f}'.format(D[i][0] + 0))
 
-def wypisz_macierz(A,n):
+
+def wypisz_macierz(A, n):
     for i in range(n):
         for k in range(n):
-            if A[i][k]+0 == 0:
+            if A[i][k] + 0 == 0:
                 print('{0:5}'.format(0), end=" ")
-            elif A[i][k]+0 == 1:
+            elif A[i][k] + 0 == 1:
                 print('{0:5}'.format(1), end=" ")
             else:
-                print('{0:5.2f}'.format(A[i][k]+0), end=" ")
+                print('{0:5.2f}'.format(A[i][k] + 0), end=" ")
         print()
+
 
 # GLOBALNE
 # wczytanie danych
@@ -51,7 +53,7 @@ for w in range(n):
 # macierz L
 for w in range(n):
     L.append([0.0 for _ in range(n)])
-    L[w][w]=1.0
+    L[w][w] = 1.0
 # iksy (wektor wyrazow wolnych)
 kosz = input().split()
 for w in range(n):
@@ -90,11 +92,11 @@ while aktualny_pierwszy_wiersz < n and aktualna_pierwsza_kolumna < n and \
         a_j0 = k
         # zamiana pierwszego wiersza z wierszem elementu glownego
         wypisz_rownanie()
-        if aktualny_pierwszy_wiersz!=w:
-            print("zamiana {0} <-> {1}".format(aktualny_pierwszy_wiersz,w))
+        if aktualny_pierwszy_wiersz != w:
+            print("zamiana {0} <-> {1}".format(aktualny_pierwszy_wiersz, w))
         zamien_wiersze(M, aktualny_pierwszy_wiersz, a_i0)
         zamien_wiersze(D, aktualny_pierwszy_wiersz, a_i0)
-        if aktualny_pierwszy_wiersz!=w:
+        if aktualny_pierwszy_wiersz != w:
             wypisz_rownanie()
         # dzielenie pierwszego wiersza przez a <- NIE!!! TERAZ zostawiamy
         print("element glowny ({0:.2f})".format(a))
@@ -105,11 +107,11 @@ while aktualny_pierwszy_wiersz < n and aktualna_pierwsza_kolumna < n and \
         # od danego wiersza odejmujemy wiersz pierwszy macierzy A
         # pomnożony przez element stojący w danym wierszu w kolumnie elementu glownego
         # (czyli zerujemy kolejna kolumne)
-        for w in range(aktualny_pierwszy_wiersz+1,n):
+        for w in range(aktualny_pierwszy_wiersz + 1, n):
             # mnozniki dajemy do macierzy L
             mnoznik = M[w][a_j0] / a
-            L[w][aktualna_pierwsza_kolumna]=mnoznik
-            #print('{0:5.2f}'.format(M[w][a_j0]), end=" ")
+            L[w][aktualna_pierwsza_kolumna] = mnoznik
+            # print('{0:5.2f}'.format(M[w][a_j0]), end=" ")
             if w != aktualny_pierwszy_wiersz:
                 # print("odejmowanie od wiersza {0} wiersza {1} z mnoznikiem {2:.2f}".format(w,aktualny_pierwszy_wiersz,mnoznik))
                 odejmij_wiersze(M, w, aktualny_pierwszy_wiersz, mnoznik)
@@ -117,7 +119,7 @@ while aktualny_pierwszy_wiersz < n and aktualna_pierwsza_kolumna < n and \
                 # wypisz_rownanie()
             else:
                 pass
-        #print()
+        # print()
     # zmniejszamy macierz (rozpatrywana czesc macierzy)
     aktualny_pierwszy_wiersz += 1
     aktualna_pierwsza_kolumna = a_j0 + 1
@@ -140,17 +142,17 @@ else:
     # wypisanie macierzy w postaci calkowicie zredukowanej
     wypisz_rownanie()
     print("Macierz L")
-    wypisz_macierz(L,n)
+    wypisz_macierz(L, n)
     print("Macierz U")
-    wypisz_macierz(M,n)
+    wypisz_macierz(M, n)
     # podstawianie w tyl
     print("iksy:")
-    X=[1.0 for _ in range(n)]
-    X[n-1]=(D[n-1][0]/M[n-1][n-1])
+    X = [1.0 for _ in range(n)]
+    X[n - 1] = (D[n - 1][0] / M[n - 1][n - 1])
     for i in range(n - 2, -1, -1):
-        suma=0
-        for k in range(i+1,n):
-            suma+=M[i][k]*X[k]
-        X[i]=((D[i][0]-suma)/M[i][i])
+        suma = 0
+        for k in range(i + 1, n):
+            suma += M[i][k] * X[k]
+        X[i] = ((D[i][0] - suma) / M[i][i])
     for i in X:
         print(i)
