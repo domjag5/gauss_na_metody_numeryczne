@@ -151,6 +151,7 @@ else:
     wypisz_macierz(L,n)
     print("Macierz U")
     wypisz_macierz(M,n)
+    # podstawianie w tyl
     print("iksy:")
     X=[1.0 for _ in range(n)]
     X[n-1]=(D[n-1][0]/M[n-1][n-1])
