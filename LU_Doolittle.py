@@ -229,7 +229,7 @@ U = [[0.0 for _ in range(n)] for _ in range(n)]
 if oblicz_wyznacznik(M, n) == 0:
     print("macierz nieodwracalna")
 else:
-    # dolitle
+    # Doolittle
     for i in range(n):
         for j in range(i, n):
             suma = 0
