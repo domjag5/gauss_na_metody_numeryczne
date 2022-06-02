@@ -182,8 +182,7 @@ def wypisz_macierz(A, n):
         print()
 
 
-
-def wyznacz_macierz_Mij(A, n, i, j):	#i,j - zaczynaja sie od 1
+def wyznacz_macierz_Mij(A, n, i, j):  # i,j - zaczynaja sie od 1
     Mij = []
     for w in range(n):
         if w == i - 1:
@@ -213,6 +212,7 @@ def oblicz_wyznacznik(A, n):
             wyznacznik += A[0][k] * oblicz_dopelnienie(A, n, 1, k + 1)
         return wyznacznik
 
+
 # GLOBALNE
 # wczytanie danych
 print("n: ")
@@ -228,7 +228,7 @@ for w in range(n):
     L[w][w] = 1.0
 U = [[0.0 for _ in range(n)] for _ in range(n)]
 # PROGRAM
-if oblicz_wyznacznik(M,n)==0:
+if oblicz_wyznacznik(M, n) == 0:
     print("macierz nieodwracalna")
 else:
     for i in range(n):
