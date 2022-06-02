@@ -23,6 +23,7 @@ def odwroc_macierz_trojkatna(A, n):
 def sumuj_macierze(X, X_liczba_wierszy, X_liczba_kolumn, Y, Y_liczba_wierszy, Y_liczba_kolumn):
     if X_liczba_wierszy != Y_liczba_wierszy or X_liczba_kolumn != Y_liczba_kolumn:
         print("operacja niewykonalna")
+        return -1
     else:
         A = []
         for w in range(X_liczba_wierszy):
@@ -36,6 +37,7 @@ def sumuj_macierze(X, X_liczba_wierszy, X_liczba_kolumn, Y, Y_liczba_wierszy, Y_
 def przemnoz_macierze(X, X_liczba_wierszy, X_liczba_kolumn, Y, Y_liczba_wierszy, Y_liczba_kolumn):
     if X_liczba_kolumn != Y_liczba_wierszy:
         print("operacja niewykonalna")
+        return -1
     else:
         A = []
         for w in range(X_liczba_wierszy):
@@ -162,9 +164,6 @@ def podziel_wiersz(M, wiersz, dzielnik):
         M[wiersz][k] /= dzielnik
 
 
-# funkcja odjecie wiersza pomnozonego przez cos
-# mnozenie -mnozymy licznik i mianownik
-# odejmowanie
 def odejmij_wiersze(M, odjemna, odjemnik, mnoznik):
     for k in range(n):
         M[odjemna][k] -= M[odjemnik][k] * mnoznik
@@ -212,8 +211,7 @@ def oblicz_wyznacznik(A, n):
             wyznacznik += A[0][k] * oblicz_dopelnienie(A, n, 1, k + 1)
         return wyznacznik
 
-
-# GLOBALNE
+# WYZNACZANIE MACIERZY ODWROTNEJ KORZYSTAJAC Z ROZKLADU LU
 # wczytanie danych
 print("n: ")
 print("macierz:")
@@ -231,6 +229,7 @@ U = [[0.0 for _ in range(n)] for _ in range(n)]
 if oblicz_wyznacznik(M, n) == 0:
     print("macierz nieodwracalna")
 else:
+    # dolitle
     for i in range(n):
         for j in range(i, n):
             suma = 0
@@ -242,6 +241,7 @@ else:
             for k in range(i):
                 suma += L[j][k] * U[k][i]
             L[j][i] = (M[j][i] - suma) / U[i][i]
+    #
     print("Macierz L")
     wypisz_macierz(L, n)
     print("Macierz U")
